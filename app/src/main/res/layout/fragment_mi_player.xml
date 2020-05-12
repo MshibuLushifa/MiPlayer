@@ -1,14 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.MiPlayerFragment">
+    tools:context=".ui.fragment.tfragment.MiPlayerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBarMiPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/currentTrackTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Example track"
+        android:textSize="20sp"
+        android:layout_below="@id/toolBarMiPlayer"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/albumArtMiPlayer"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:layout_above="@id/controllersLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:padding="50dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/controllersLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_above="@id/seekBarLayout"
+        android:layout_marginBottom="20dp">
+
+        <ImageButton
+            android:id="@+id/playPrevButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_prev"/>
+        <ImageButton
+            android:id="@+id/controllerButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_play"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <ImageButton
+            android:id="@+id/playNextButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_next"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/seekBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_above="@id/currentTrackDetails">
+
+        <TextView
+            android:id="@+id/seekingTime"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_toLeftOf="@id/currentTime"
+            android:layout_toRightOf="@id/seekingTime"/>
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/currentTrackDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="Example details"
+        android:layout_marginBottom="40dp"/>
+
+</RelativeLayout>
