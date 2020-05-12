@@ -1,8 +1,10 @@
 package com.milushifa.miplayer.ui.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -10,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.milushifa.miplayer.R;
+import com.milushifa.miplayer.adapter.AlbumAdapter;
+import com.milushifa.miplayer.media.loader.AlbumLoader;
 
 
 public class AlbumFragment extends Fragment {
     private RecyclerView mRecyclerView;
+    private AlbumAdapter mAlbumAdapter;
 
     public AlbumFragment(){}
 
@@ -24,6 +29,32 @@ public class AlbumFragment extends Fragment {
         return albumFragmentView;
     }
     private void initComponent(View rootView){
-        mRecyclerView = rootView.findViewById(R.id.recyclerViewTrackFragment);
+        mRecyclerView = rootView.findViewById(R.id.recyclerViewAlbumFragment);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        new LoadAlbum().execute();
+    }
+
+    public class LoadAlbum extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            if (getActivity() != null) {
+                mAlbumAdapter = new AlbumAdapter(getContext(), new AlbumLoader().getAllAlbums(getContext()));
+            }
+            return "Execute";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (getActivity() != null) {
+                mRecyclerView.setAdapter(mAlbumAdapter);
+            }
+        }
     }
 }

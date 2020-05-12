@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(Flags.TAG, "onResume: is Called!");
     }
 
     @Override

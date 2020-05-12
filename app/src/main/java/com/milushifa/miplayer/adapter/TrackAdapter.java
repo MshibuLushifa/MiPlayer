@@ -1,6 +1,7 @@
 package com.milushifa.miplayer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Track;
+import com.milushifa.miplayer.util.Flags;
 
 import java.util.List;
 
@@ -24,7 +26,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         this.trackList = trackList;
     }
 
-
     @NonNull
     @Override
     public TrackHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,7 +36,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     public void onBindViewHolder(@NonNull TrackHolder holder, int position) {
         Track track = trackList.get(position);
 
-        holder.setTrack(track.title, track.album + ", " + track.artist, String.valueOf(track.duration));
+        float minuteWithSecond = ((float)(track.duration / 1000) / 60);
+        int minute = (int) minuteWithSecond;
+        float rawSecond = minuteWithSecond-minute;
+        int second = (int) ((rawSecond*1000)/10);
+        holder.setTrack(track.title, track.album + ", " + track.artist, minute + ":" + second);
     }
 
     @Override
@@ -55,8 +60,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         }
 
         void setTrack(String title, String details, String duration){
-            trackTitle.setText(title);
+            if(title.length()>25)title=title.substring(0, 23) + "...";
+            if(details.length()>35)details=details.substring(0, 30) + "...";
+
             trackDetails.setText(details);
+            trackTitle.setText(title);
             trackDuration.setText(duration);
         }
     }

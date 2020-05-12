@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Example title"
-            android:textSize="15dp"/>
+            android:textSize="18dp"/>
         <TextView
             android:id="@+id/trackDetails"
             android:layout_width="match_parent"
