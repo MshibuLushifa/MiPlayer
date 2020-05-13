@@ -31,4 +31,18 @@ public class Track {
         duration = -1;
         trackNumber = -1;
     }
+
+    public Track(long id, String title, long albumId, String albumName, long artistId, String artistName, int duration){
+        this.id = id;
+        this.title = title;
+        this.albumId = albumId;
+        this.album = albumName;
+        this.artistId = artistId;
+        this.artist = artistName;
+        this.duration = duration;
+        this.trackNumber = -1;
+    }
+
+
+
 }

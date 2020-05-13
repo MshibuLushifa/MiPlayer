@@ -89,4 +89,84 @@ public class TracksLoader {
         }
         return songList;
     }
+
+    public List<Track> getAllSongsByArtist(Context context, long artist_id){
+        List<Track> songList = new ArrayList<>();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] mProjection = new String[]{
+                MediaStore.Audio.AudioColumns._ID,
+                MediaStore.Audio.AudioColumns.TITLE,
+                MediaStore.Audio.AudioColumns.ALBUM_ID,
+                MediaStore.Audio.AudioColumns.ALBUM,
+                MediaStore.Audio.AudioColumns.ARTIST_ID,
+                MediaStore.Audio.AudioColumns.ARTIST,
+                MediaStore.Audio.AudioColumns.DURATION,
+                MediaStore.Audio.AudioColumns.TRACK
+        };
+
+        String selection = "is_music=1 and title != '' and artist_id=" + artist_id;
+
+        String mSortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
+
+        Cursor cursor = context.getContentResolver().query(uri, mProjection, selection, null, mSortOrder);
+
+        if(cursor!=null && cursor.moveToFirst()){
+            do{
+                int trackNumbers = cursor.getInt(7);
+                while(trackNumbers>=1000){
+                    trackNumbers-=1000;
+                }
+                songList.add(new Track(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        cursor.getLong(4),
+                        cursor.getString(5),
+                        cursor.getInt(6),
+                        trackNumbers
+                ));
+            }while(cursor.moveToNext());
+            if(cursor!=null){
+                cursor.close();
+            }
+        }
+        return songList;
+    }
+
+    public List<Track> getAllSongsByGenre(Context context, long genre_id){
+        List<Track> songList = new ArrayList<>();
+        Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", genre_id);
+        String[] mProjection = new String[] {
+                MediaStore.Audio.AudioColumns._ID,
+                MediaStore.Audio.AudioColumns.DISPLAY_NAME,
+                MediaStore.Audio.AudioColumns.ALBUM_ID,
+                MediaStore.Audio.AudioColumns.ALBUM,
+                MediaStore.Audio.AudioColumns.ARTIST_ID,
+                MediaStore.Audio.AudioColumns.ARTIST,
+                MediaStore.Audio.AudioColumns.DURATION
+        };
+
+//        String mSortOrder = MediaStore.Audio.Genres.DEFAULT_SORT_ORDER;
+
+        Cursor cursor = context.getContentResolver().query(uri, mProjection, null, null, null);
+
+        if(cursor!=null && cursor.moveToFirst()){
+            do{
+                songList.add(new Track(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        cursor.getLong(4),
+                        cursor.getString(5),
+                        cursor.getInt(6)
+                ));
+            }while(cursor.moveToNext());
+            if(cursor!=null){
+                cursor.close();
+            }
+        }
+        return songList;
+    }
 }

@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Album;
 import com.milushifa.miplayer.media.model.Artist;
+import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 import java.util.List;
 
@@ -21,9 +24,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
     private List<Artist> artistList;
     private Context context;
 
-    public ArtistAdapter(Context context, List<Artist> artistList){
+    private FragmentTransmitter mFragmentTransmitter;
+
+    public ArtistAdapter(Context context, List<Artist> artistList, FragmentTransmitter mFragmentTransmitter){
         this.context = context;
         this.artistList = artistList;
+        this.mFragmentTransmitter = mFragmentTransmitter;
     }
 
 
@@ -45,15 +51,21 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
         return artistList.size();
     }
 
-    class ArtistHolder extends RecyclerView.ViewHolder{
+
+
+
+
+    class ArtistHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView artistAtrView;
         private TextView artistTitle, artistDetails;
 
-        public ArtistHolder(@NonNull View itemView) {
+         ArtistHolder(@NonNull View itemView) {
             super(itemView);
             artistAtrView = itemView.findViewById(R.id.artistArt);
             artistTitle = itemView.findViewById(R.id.artistTitle);
             artistDetails = itemView.findViewById(R.id.artistDetails);
+
+            itemView.setOnClickListener(this);
         }
 
         ImageView getArtistAtrView(){
@@ -66,6 +78,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
 
             artistTitle.setText(title);
             artistDetails.setText(details);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ARTIST, artistList.get(getAdapterPosition()).id);
         }
     }
 }

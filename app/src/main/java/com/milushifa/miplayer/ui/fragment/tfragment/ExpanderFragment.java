@@ -76,6 +76,12 @@ public class ExpanderFragment extends Fragment {
                     case ModelType.ALBUM:
                         mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsFromAlbum(getContext(), mModelId));
                         break;
+                    case ModelType.ARTIST:
+                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByArtist(getContext(), mModelId));
+                        break;
+                    case ModelType.GENRE:
+                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByGenre(getContext(), mModelId));
+                        break;
                 }
             }
             return "Execute";

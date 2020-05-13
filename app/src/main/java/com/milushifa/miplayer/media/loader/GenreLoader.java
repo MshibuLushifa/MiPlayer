@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.milushifa.miplayer.media.model.Genre;
 
@@ -17,8 +18,7 @@ public class GenreLoader {
         Cursor cursor = makeCursor(context, null, null);
         if(cursor!=null && cursor.moveToFirst()){
             do{
-                genreList.add(new Genre(cursor.getLong(0),
-                        cursor.getString(1)));
+                genreList.add(new Genre(cursor.getLong(0), cursor.getString(1)));
             }while(cursor.moveToNext());
             cursor.close();
         }
@@ -44,4 +44,6 @@ public class GenreLoader {
         Cursor cursor = context.getContentResolver().query(uri, mProjection, selection, selectionArgs, mSortOrder);
         return cursor;
     }
+
+
 }

@@ -16,7 +16,9 @@ import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 public class PagerAdapter extends FragmentStateAdapter {
+
     private FragmentTransmitter mFragmentTransmitter;
+
     public PagerAdapter(@NonNull FragmentActivity fragmentActivity, FragmentTransmitter mFragmentTransmitter) {
         super(fragmentActivity);
         this.mFragmentTransmitter = mFragmentTransmitter;
@@ -28,8 +30,8 @@ public class PagerAdapter extends FragmentStateAdapter {
         switch(position){
             case 0: return new TrackFragment();
             case 1: return new AlbumFragment(mFragmentTransmitter);
-            case 2: return new ArtistFragment();
-            case 3: return new GenreFragment();
+            case 2: return new ArtistFragment(mFragmentTransmitter);
+            case 3: return new GenreFragment(mFragmentTransmitter);
             case 4: return new PlaylistFragment();
             default: return null;
         }

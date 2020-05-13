@@ -11,13 +11,19 @@ import android.view.ViewGroup;
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.adapter.GenreAdapter;
 import com.milushifa.miplayer.media.loader.GenreLoader;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 
 public class GenreFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private GenreAdapter mGenreAdapter;
 
-    public GenreFragment(){}
+    private FragmentTransmitter mFragmentTransmitter;
+
+
+    public GenreFragment(FragmentTransmitter mFragmentTransmitter){
+        this.mFragmentTransmitter = mFragmentTransmitter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class GenreFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             if (getActivity() != null) {
-                mGenreAdapter = new GenreAdapter(getContext(), new GenreLoader().getAllGenre(getContext()));
+                mGenreAdapter = new GenreAdapter(getContext(), new GenreLoader().getAllGenre(getContext()), mFragmentTransmitter);
             }
             return "Execute";
         }

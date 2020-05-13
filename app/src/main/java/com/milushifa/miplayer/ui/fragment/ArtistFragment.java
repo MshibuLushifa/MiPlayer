@@ -16,13 +16,18 @@ import com.milushifa.miplayer.adapter.AlbumAdapter;
 import com.milushifa.miplayer.adapter.ArtistAdapter;
 import com.milushifa.miplayer.media.loader.AlbumLoader;
 import com.milushifa.miplayer.media.loader.ArtistLoader;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 
 public class ArtistFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArtistAdapter mArtistAdapter;
 
-    public ArtistFragment(){}
+    private FragmentTransmitter mFragmentTransmitter;
+
+    public ArtistFragment(FragmentTransmitter mFragmentTransmitter){
+        this.mFragmentTransmitter = mFragmentTransmitter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class ArtistFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             if (getActivity() != null) {
-                mArtistAdapter = new ArtistAdapter(getContext(), new ArtistLoader().getAllArtist(getContext()));
+                mArtistAdapter = new ArtistAdapter(getContext(), new ArtistLoader().getAllArtist(getContext()), mFragmentTransmitter);
             }
             return "Execute";
         }
