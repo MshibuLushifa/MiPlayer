@@ -36,11 +36,22 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     public void onBindViewHolder(@NonNull TrackHolder holder, int position) {
         Track track = trackList.get(position);
 
-        float minuteWithSecond = ((float)(track.duration / 1000) / 60);
-        int minute = (int) minuteWithSecond;
-        float rawSecond = minuteWithSecond-minute;
-        int second = (int) ((rawSecond*1000)/10);
-        holder.setTrack(track.title, track.album + ", " + track.artist, minute + ":" + second);
+        if(track.duration<3600000){
+//            float minuteWithSecond = ((float)(track.duration / 1000) / 60);
+//            int minute = (int) minuteWithSecond;
+//            float rawSecond = minuteWithSecond-minute;
+//            int second = (int) ((rawSecond*1000)/10);
+            long minute = (track.duration/1000)/60;
+            long second = (track.duration/1000)%60;
+
+            holder.setTrack(track.title, track.album + ", " + track.artist, minute + ":" + second);
+        }else{
+            long hours = ((track.duration/1000)/60)/60;
+            long minute = ((track.duration/1000)/60)%60;
+            long second = (track.duration/1000)%60;
+            holder.setTrack(track.title, track.album + ", " + track.artist, hours + ":" + minute + ":" + second);
+        }
+//            holder.setTrack(track.title, track.album + ", " + track.artist, String.valueOf(track.duration));
     }
 
     @Override

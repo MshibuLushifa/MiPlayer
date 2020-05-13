@@ -46,7 +46,7 @@ public class TracksLoader {
     }
 
 
-    public static List<Track> getAllSongsFromAlbum(Context context, long album_id){
+    public List<Track> getAllSongsFromAlbum(Context context, long album_id){
         List<Track> songList = new ArrayList<>();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] mProjection = new String[]{

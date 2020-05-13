@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Album;
+import com.milushifa.miplayer.media.model.ModelType;
 import com.milushifa.miplayer.ui.fragment.tfragment.ExpanderFragment;
+import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 import java.util.List;
 
@@ -22,9 +25,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
     private List<Album> albumList;
     private Context context;
 
-    public AlbumAdapter(Context context, List<Album> albumList){
+    private FragmentTransmitter mFragmentTransmitter;
+
+    public AlbumAdapter(Context context, List<Album> albumList, FragmentTransmitter mFragmentTransmitter){
         this.context = context;
         this.albumList = albumList;
+        this.mFragmentTransmitter = mFragmentTransmitter;
     }
 
 
@@ -52,7 +58,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
 
 
-    class AlbumHolder extends RecyclerView.ViewHolder {
+    class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView albumAtrView;
         private TextView albumTitle, albumDetails;
 
@@ -61,6 +67,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
             albumAtrView = itemView.findViewById(R.id.albumArt);
             albumTitle = itemView.findViewById(R.id.albumTitle);
             albumDetails = itemView.findViewById(R.id.albumDetails);
+
+            itemView.setOnClickListener(this);
         }
 
         ImageView getAlbumAtrView(){
@@ -73,6 +81,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
              albumTitle.setText(title);
              albumDetails.setText(details);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ALBUM, albumList.get(getAdapterPosition()).id);
         }
     }
 }

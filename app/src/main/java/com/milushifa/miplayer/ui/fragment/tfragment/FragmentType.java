@@ -1,4 +1,4 @@
-package com.milushifa.miplayer.util;
+package com.milushifa.miplayer.ui.fragment.tfragment;
 
 public class FragmentType{
     public static final String MAIN_FRAGMENT = "main-fragment";

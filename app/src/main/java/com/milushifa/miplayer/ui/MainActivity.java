@@ -5,16 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.milushifa.miplayer.R;
+import com.milushifa.miplayer.media.model.ModelType;
 import com.milushifa.miplayer.ui.fragment.tfragment.ExpanderFragment;
-import com.milushifa.miplayer.ui.fragment.tfragment.FragmentTransmitter;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 import com.milushifa.miplayer.ui.fragment.tfragment.MainFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.MiPlayerFragment;
+import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.util.Flags;
-import com.milushifa.miplayer.util.FragmentType;
 
 public class MainActivity extends AppCompatActivity implements FragmentTransmitter {
-    public static final String ROOT_FRAGMENT = "root_fragment";
 
     private FragmentManager manager;
 
@@ -27,13 +29,15 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
         ExpanderFragment expanderFragment = new ExpanderFragment();
         MiPlayerFragment miPlayerFragment = new MiPlayerFragment();
 
-        transaction(mainFragment, ROOT_FRAGMENT);
+
+        Log.i(Flags.TAG, "onCreate: is called!");
+        transmit(FragmentType.MAIN_FRAGMENT, null, 0);
     }
 
-    private void transaction(Fragment fragment, String root){
+    private void transaction(Fragment fragment){
         manager = getSupportFragmentManager();
         manager.beginTransaction()
-                .replace(R.id.mainContainer, fragment, root)
+                .replace(R.id.mainContainer, fragment)
                 .commit();
     }
 
@@ -43,23 +47,37 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
     }
 
     @Override
-    public void transmit(String fragmentType) {
+    public void transmit(String fragmentType, String modelType, long contentId) {
         switch(fragmentType){
             case FragmentType.MAIN_FRAGMENT:
-                transaction(new MainFragment(), null); break;
+                BackStack.pushBackStack(FragmentType.MAIN_FRAGMENT);
+                transaction(new MainFragment()); break;
             case FragmentType.EXPANDER_FRAGMENT:
-                transaction(new ExpanderFragment(), null); break;
+                BackStack.pushBackStack(FragmentType.EXPANDER_FRAGMENT);
+                ExpanderFragment fragment = new ExpanderFragment();
+                Bundle data = new Bundle();
+                data.putString(ModelType.MODEL_TYPE, modelType);
+                data.putLong(ModelType.MODEL_ID, contentId);
+                fragment.setArguments(data);
+                transaction(fragment); break;
             case FragmentType.PLAYER_FRAGMENT:
-                transaction(new MiPlayerFragment(), null); break;
+                BackStack.pushBackStack(FragmentType.PLAYER_FRAGMENT);
+                transaction(new MiPlayerFragment()); break;
+            default:
+                finish();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(manager.findFragmentByTag(ROOT_FRAGMENT)==null){
-            transaction(new MainFragment(), ROOT_FRAGMENT);
-        }else{
+        String frgmnt = BackStack.popBackStack();
+        Log.i(Flags.TAG, "onBackPressed: fragment: " + frgmnt);
+        if(frgmnt==null){
+            BackStack.resetBackStack();
             finish();
+        }else{
+            if(FragmentType.MAIN_FRAGMENT.equals(frgmnt)) BackStack.resetBackStack();
+            transmit(frgmnt, null, 0);
         }
     }
 }
