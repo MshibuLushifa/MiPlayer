@@ -4,15 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.milushifa.miplayer.R;
-import com.milushifa.miplayer.util.Flags;
 
 public class SplashScreenActivity extends AppCompatActivity {
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 101;
@@ -32,7 +29,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.i(Flags.TAG, "onRequestPermissionsResult: is called!");
         if(requestCode==STORAGE_PERMISSION_REQUEST_CODE){
             if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 proceedToNext();

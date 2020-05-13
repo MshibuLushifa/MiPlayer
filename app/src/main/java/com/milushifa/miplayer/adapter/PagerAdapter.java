@@ -28,7 +28,7 @@ public class PagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch(position){
-            case 0: return new TrackFragment();
+            case 0: return new TrackFragment(mFragmentTransmitter);
             case 1: return new AlbumFragment(mFragmentTransmitter);
             case 2: return new ArtistFragment(mFragmentTransmitter);
             case 3: return new GenreFragment(mFragmentTransmitter);

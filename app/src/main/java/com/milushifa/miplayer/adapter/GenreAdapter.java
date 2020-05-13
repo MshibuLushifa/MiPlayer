@@ -1,6 +1,7 @@
 package com.milushifa.miplayer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Genre;
 import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.ui.MainActivity;
 import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
+import com.milushifa.miplayer.util.Flags;
 
 import java.util.List;
 
@@ -65,6 +68,8 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreHolder>
 
         @Override
         public void onClick(View v) {
+            MainActivity.viewPosition = 3;
+            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.GENRE, genreList.get(getAdapterPosition()).id);
         }
     }

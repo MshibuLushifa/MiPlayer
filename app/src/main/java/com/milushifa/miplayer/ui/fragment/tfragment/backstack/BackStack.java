@@ -13,7 +13,6 @@ public class BackStack {
         int currentTrace = --stackTrace;
         if(currentTrace>-1 && currentTrace<20){
             String fragmentType = backStack[currentTrace];
-            Log.i(Flags.TAG, "popBackStack: popped: " + fragmentType + " stackTrace: " + stackTrace);
             return fragmentType;
         }
         return null;
@@ -22,7 +21,6 @@ public class BackStack {
     public static void pushBackStack(String fragmentType){
        if(stackTrace>=-1 && stackTrace<20){
            backStack[++stackTrace] = fragmentType;
-           Log.i(Flags.TAG, "pushBackStack: pushed: " + fragmentType + " stackTrace: " + stackTrace);
        }
     }
     public static void resetBackStack(){

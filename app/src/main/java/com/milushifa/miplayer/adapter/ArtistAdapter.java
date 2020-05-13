@@ -2,6 +2,7 @@ package com.milushifa.miplayer.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Album;
 import com.milushifa.miplayer.media.model.Artist;
 import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.ui.MainActivity;
 import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
+import com.milushifa.miplayer.util.Flags;
 
 import java.util.List;
 
@@ -83,6 +86,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
 
         @Override
         public void onClick(View v) {
+            MainActivity.viewPosition = 2;
+            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ARTIST, artistList.get(getAdapterPosition()).id);
         }
     }

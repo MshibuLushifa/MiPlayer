@@ -1,6 +1,7 @@
 package com.milushifa.miplayer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Album;
 import com.milushifa.miplayer.media.model.ModelType;
-import com.milushifa.miplayer.ui.fragment.tfragment.ExpanderFragment;
+import com.milushifa.miplayer.ui.MainActivity;
 import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
+import com.milushifa.miplayer.util.Flags;
 
 import java.util.List;
 
@@ -85,6 +85,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
         @Override
         public void onClick(View v) {
+            MainActivity.viewPosition = 1;
+            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ALBUM, albumList.get(getAdapterPosition()).id);
         }
     }

@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.Track;
+import com.milushifa.miplayer.service.ServiceProvider;
+import com.milushifa.miplayer.service.player.ControllerConstants;
+import com.milushifa.miplayer.service.player.MPPlayable;
+import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 import com.milushifa.miplayer.util.Flags;
 
 import java.util.List;
@@ -21,9 +26,15 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     private List<Track> trackList;
     private Context context;
 
-    public TrackAdapter(Context context, List<Track> trackList){
+    private MPPlayable mpPlayable;
+
+    private FragmentTransmitter mFragmentTransmitter;
+
+    public TrackAdapter(Context context, List<Track> trackList, FragmentTransmitter mFragmentTransmitter){
         this.context = context;
         this.trackList = trackList;
+        this.mpPlayable = MPPlayable.getInstance();
+        this.mFragmentTransmitter = mFragmentTransmitter;
     }
 
     @NonNull
@@ -59,7 +70,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         return trackList.size();
     }
 
-    class TrackHolder extends RecyclerView.ViewHolder{
+    class TrackHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView trackTitle, trackDetails, trackDuration;
 
@@ -68,6 +79,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             trackTitle = rootView.findViewById(R.id.trackTitle);
             trackDetails = rootView.findViewById(R.id.trackDetails);
             trackDuration = rootView.findViewById(R.id.trackDuration);
+            rootView.setOnClickListener(this);
         }
 
         void setTrack(String title, String details, String duration){
@@ -77,6 +89,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             trackDetails.setText(details);
             trackTitle.setText(title);
             trackDuration.setText(duration);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mpPlayable.updateCurrentPlayable(trackList, getAdapterPosition());
+            mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT);
+            context.startService(ServiceProvider.getMiServiceIntent(context, ControllerConstants.PLAY_TRACK));
         }
     }
 }

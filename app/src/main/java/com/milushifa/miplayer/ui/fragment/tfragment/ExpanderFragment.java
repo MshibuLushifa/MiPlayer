@@ -21,6 +21,8 @@ import com.milushifa.miplayer.adapter.TrackAdapter;
 import com.milushifa.miplayer.media.loader.AlbumLoader;
 import com.milushifa.miplayer.media.loader.TracksLoader;
 import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
+import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 
 public class ExpanderFragment extends Fragment {
@@ -30,11 +32,13 @@ public class ExpanderFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private TrackAdapter mTrackAdapter;
 
-    private String mModelType;
-    private long mModelId;
+    private static String mModelType;
+    private static long mModelId;
 
-    public ExpanderFragment() {
-        // Required empty public constructor
+    private FragmentTransmitter mFragmentTransmitter;
+
+    public ExpanderFragment(FragmentTransmitter mFragmentTransmitter) {
+        this.mFragmentTransmitter = mFragmentTransmitter;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,13 +78,13 @@ public class ExpanderFragment extends Fragment {
             if (getActivity() != null) {
                 switch(mModelType){
                     case ModelType.ALBUM:
-                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsFromAlbum(getContext(), mModelId));
+                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsFromAlbum(getContext(), mModelId), mFragmentTransmitter);
                         break;
                     case ModelType.ARTIST:
-                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByArtist(getContext(), mModelId));
+                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByArtist(getContext(), mModelId), mFragmentTransmitter);
                         break;
                     case ModelType.GENRE:
-                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByGenre(getContext(), mModelId));
+                        mTrackAdapter = new TrackAdapter(getContext(), new TracksLoader().getAllSongsByGenre(getContext(), mModelId), mFragmentTransmitter);
                         break;
                 }
             }

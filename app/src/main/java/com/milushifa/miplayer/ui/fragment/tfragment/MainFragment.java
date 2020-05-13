@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.adapter.PagerAdapter;
+import com.milushifa.miplayer.ui.MainActivity;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
@@ -34,6 +35,9 @@ public class MainFragment extends Fragment {
     private View lastTrackView;
 
     private FragmentTransmitter mFragmentTransmitter;
+
+    public MainFragment(){
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -78,13 +82,21 @@ public class MainFragment extends Fragment {
             }
         }).attach();
 
+        setPosition(MainActivity.viewPosition);
+
         lastTrackView = rootView.findViewById(R.id.layoutLastTrackPlayer);
 
         lastTrackView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT, null, 0);
+                mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT);
             }
         });
+    }
+
+    public void setPosition(int position){
+        if(mViewPager!=null){
+            mViewPager.setCurrentItem(position);
+        }
     }
 }
