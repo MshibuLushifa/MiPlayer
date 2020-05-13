@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,6 +21,12 @@
         </activity>
         <activity android:name=".ui.MainActivity"/>
         <service android:name=".service.MiPlayerService"/>
+        <receiver android:name=".receiver.UiDataReceiver">
+            <intent-filter>
+                <action android:name="com.milushifa.miplayer.receiver.SEND_DURATION"/>
+                <action android:name="com.milushifa.miplayer.receiver.SEND_CURRENT_POSITION"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

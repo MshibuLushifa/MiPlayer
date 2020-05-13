@@ -86,7 +86,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
         @Override
         public void onClick(View v) {
             MainActivity.viewPosition = 1;
-            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ALBUM, albumList.get(getAdapterPosition()).id);
         }
     }

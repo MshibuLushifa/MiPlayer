@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
             if(FragmentType.MAIN_FRAGMENT.equals(fragmentType)) BackStack.resetBackStack();
             transmit(fragmentType);
         }
-        Log.i(Flags.TAG, "onBackPressed: type: " + fragmentType);
     }
 }
 

@@ -87,7 +87,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
         @Override
         public void onClick(View v) {
             MainActivity.viewPosition = 2;
-            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.ARTIST, artistList.get(getAdapterPosition()).id);
         }
     }

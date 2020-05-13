@@ -69,7 +69,6 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreHolder>
         @Override
         public void onClick(View v) {
             MainActivity.viewPosition = 3;
-            Log.i(Flags.TAG, "onClick: viewPosition: " + MainActivity.viewPosition);
             mFragmentTransmitter.transmit(FragmentType.EXPANDER_FRAGMENT, ModelType.GENRE, genreList.get(getAdapterPosition()).id);
         }
     }

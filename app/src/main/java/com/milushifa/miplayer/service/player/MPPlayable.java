@@ -36,7 +36,10 @@ public class MPPlayable {
     public Uri getCurrentPlayableTrack(){
         return ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 mTrackList.get(mCurrentPosition).id);
+    }
 
+    public String getCurrentTrack(){
+        return mTrackList.get(mCurrentPosition).title;
     }
 
     public void nextPlayableTrack(){
@@ -52,5 +55,9 @@ public class MPPlayable {
         }else{
             mCurrentPosition = mTrackList.size()-1;
         }
+    }
+
+    public int getDurationOfCurrentTrack() {
+        return mTrackList.get(mCurrentPosition).duration;
     }
 }
