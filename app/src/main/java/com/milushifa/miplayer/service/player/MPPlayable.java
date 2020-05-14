@@ -1,7 +1,6 @@
 package com.milushifa.miplayer.service.player;
 
 import android.content.ContentUris;
-import android.content.Context;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -37,11 +36,6 @@ public class MPPlayable {
         return ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 mTrackList.get(mCurrentPosition).id);
     }
-
-    public String getCurrentTrack(){
-        return mTrackList.get(mCurrentPosition).title;
-    }
-
     public void nextPlayableTrack(){
         if(mCurrentPosition!=mTrackList.size()-1){
             mCurrentPosition++;
@@ -56,8 +50,19 @@ public class MPPlayable {
             mCurrentPosition = mTrackList.size()-1;
         }
     }
-
     public int getDurationOfCurrentTrack() {
         return mTrackList.get(mCurrentPosition).duration;
     }
+
+    public String getCurrentTrackTitle(){
+        return mTrackList.get(mCurrentPosition).title;
+    }
+    public String getCurrentTrackDetails(){
+        Track track = mTrackList.get(mCurrentPosition);
+        return track.album + ", " + track.artist;
+    }
+    public Uri getTCurrentTrackUri(){
+        return ContentUris.withAppendedId(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, + mTrackList.get(mCurrentPosition).albumId);
+    }
+
 }

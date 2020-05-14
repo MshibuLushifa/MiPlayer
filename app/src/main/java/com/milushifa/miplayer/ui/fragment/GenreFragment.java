@@ -20,6 +20,7 @@ public class GenreFragment extends Fragment {
 
     private FragmentTransmitter mFragmentTransmitter;
 
+    public GenreFragment(){}
 
     public GenreFragment(FragmentTransmitter mFragmentTransmitter){
         this.mFragmentTransmitter = mFragmentTransmitter;

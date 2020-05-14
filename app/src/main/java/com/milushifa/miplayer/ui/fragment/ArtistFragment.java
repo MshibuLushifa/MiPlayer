@@ -25,6 +25,8 @@ public class ArtistFragment extends Fragment {
 
     private FragmentTransmitter mFragmentTransmitter;
 
+    public ArtistFragment(){}
+
     public ArtistFragment(FragmentTransmitter mFragmentTransmitter){
         this.mFragmentTransmitter = mFragmentTransmitter;
     }

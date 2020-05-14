@@ -3,6 +3,7 @@
     package="com.milushifa.miplayer">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".App"
@@ -22,9 +23,12 @@
         <activity android:name=".ui.MainActivity"/>
         <service android:name=".service.MiPlayerService"/>
         <receiver android:name=".receiver.UiDataReceiver">
-            <intent-filter>
+            <intent-filter
+                android:priority="1000">
                 <action android:name="com.milushifa.miplayer.receiver.SEND_DURATION"/>
                 <action android:name="com.milushifa.miplayer.receiver.SEND_CURRENT_POSITION"/>
+                <action android:name="com.milushifa.miplayer.receiver.SEND_PLAYING_STATUS"/>
+                <action android:name="com.milushifa.miplayer.receiver.TRACK_CHANGE"/>
             </intent-filter>
         </receiver>
     </application>

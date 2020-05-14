@@ -3,11 +3,14 @@ package com.milushifa.miplayer.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.receiver.UiDataReceiver;
 import com.milushifa.miplayer.ui.fragment.tfragment.ExpanderFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
@@ -19,6 +22,8 @@ import com.milushifa.miplayer.util.Flags;
 public class MainActivity extends AppCompatActivity implements FragmentTransmitter {
     private FragmentManager manager;
 
+    private UiDataReceiver mReceiver;
+
     // For Storing or memories the .... MODEL_TYPE and MODEL_ID
     private String model_Type;
     private long model_Id;
@@ -29,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        registerReceiver();
 
         transmit(FragmentType.MAIN_FRAGMENT);
     }
@@ -98,5 +105,24 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
             transmit(fragmentType);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver();
+    }
+
+//    private void registerReceiver(){
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_DURATION");
+//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_CURRENT_POSITION");
+//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_PLAYING_STATUS");
+//        intentFilter.addAction("com.milushifa.miplayer.receiver.TRACK_CHANGE");
+//        intentFilter.setPriority(1000);
+//        registerReceiver(mReceiver, intentFilter);
+//    }
+//    private void unregisterReceiver(){
+//        unregisterReceiver(mReceiver);
+//    }
 }
 

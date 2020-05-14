@@ -23,6 +23,8 @@ public class TrackFragment extends Fragment {
 
     private FragmentTransmitter mFragmentTransmitter;
 
+    public TrackFragment(){}
+
     public TrackFragment(FragmentTransmitter mFragmentTransmitter){
         this.mFragmentTransmitter = mFragmentTransmitter;
     }

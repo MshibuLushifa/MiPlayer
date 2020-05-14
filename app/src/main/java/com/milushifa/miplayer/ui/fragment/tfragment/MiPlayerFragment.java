@@ -1,10 +1,8 @@
 package com.milushifa.miplayer.ui.fragment.tfragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.milushifa.miplayer.R;
+import com.milushifa.miplayer.receiver.MediaObserver;
 import com.milushifa.miplayer.receiver.PlayerTracker;
 import com.milushifa.miplayer.receiver.UiDataReceiver;
 import com.milushifa.miplayer.receiver.UiUpdater;
@@ -29,16 +28,19 @@ import com.milushifa.miplayer.service.player.ControllerConstants;
 import com.milushifa.miplayer.util.Flags;
 
 
-public class MiPlayerFragment extends Fragment implements View.OnClickListener, UiUpdater {
+public class MiPlayerFragment extends Fragment implements View.OnClickListener, UiUpdater, MediaObserver {
     private Toolbar mToolbar;
     private ImageView albumArtMiPlayer;
     private SeekBar mSeekBar;
     private ImageButton playPrevButton, controllerButton, playNextButton;
-    private TextView seekingTime, currentTime, currentTrackTitle;
+    private TextView seekingTime, currentTime, currentTrackTitle, currentTrackDetails;
 
     private boolean isThisActive;
 
     private PlayerTracker mPlayerTracker;
+
+    private int durationOfCurrentTrack;
+
 
     public MiPlayerFragment() {}
 
@@ -49,6 +51,7 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
         isThisActive = true;
 
         UiDataReceiver.setUiUpdater(this);
+        UiDataReceiver.setMediaObserver(this);
 
         mPlayerTracker = PlayerTracker.getInstance();
 
@@ -75,13 +78,17 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
         currentTime = rootView.findViewById(R.id.currentTime);
 
         currentTrackTitle = rootView.findViewById(R.id.currentTrackTitle);
+        currentTrackDetails = rootView.findViewById(R.id.currentTrackDetails);
 
         playPrevButton.setOnClickListener(this);
         controllerButton.setOnClickListener(this);
         playNextButton.setOnClickListener(this);
 
+        setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
+
         setDuration(mPlayerTracker.getDurationOfCurrentTrack());
         setSeekProgress(mPlayerTracker.getPositionOfCurrentTrack());
+        mediaChangePlayingStatus(mPlayerTracker.getPlayingStatus());
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -106,6 +113,14 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
+    private void setTrackAndDetails(String title, String details){
+        if(title!=null && details!=null) {
+            if (details.length() > 42) details = details.substring(0, 40);
+            currentTrackTitle.setText(title);
+            currentTrackDetails.setText(details);
+        }
+    }
+
 
     @Override public void onClick(View v) {
         switch(v.getId()){
@@ -124,20 +139,70 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    @Override public void onDestroy() {
-        super.onDestroy();
-        isThisActive = false;
-    }
+    @Override public void onDestroy() { super.onDestroy(); isThisActive = false; }
 
     @Override public boolean isActivityActive() {
         return isThisActive;
     }
 
     @Override public void setDuration(int duration) {
+        durationOfCurrentTrack = duration;
         mSeekBar.setMax(duration);
     }
 
     @Override public void setSeekProgress(int progress) {
+        String crntTime, skgTime;
+
+        int duration = durationOfCurrentTrack - progress;
+
+        // For current Time...
+        if(duration<3600000){
+            long minute = (duration/1000)/60;
+            long second = (duration/1000)%60;
+
+            crntTime = minute + ":" + second;
+
+        }else{
+            long hours = ((duration/1000)/60)/60;
+            long minute = ((duration/1000)/60)%60;
+            long second = (duration/1000)%60;
+
+            crntTime = hours + ":" + minute + ":" + second;
+
+        }
+
+        // For seeking Time...
+        if(progress<3600000){
+            long minute = (progress/1000)/60;
+            long second = (progress/1000)%60;
+
+            skgTime = minute + ":" + second;
+
+        }else{
+            long hours = ((progress/1000)/60)/60;
+            long minute = ((progress/1000)/60)%60;
+            long second = (progress/1000)%60;
+
+            skgTime = hours + ":" + minute + ":" + second;
+
+        }
+
+
+        currentTime.setText(crntTime);
+        seekingTime.setText(skgTime);
+
         mSeekBar.setProgress(progress);
+    }
+
+    @Override
+    public void trackChange() {
+        setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
+    }
+
+    @Override
+    public void mediaChangePlayingStatus(boolean isPlaying) {
+        Log.i(Flags.TAG, "mediaChangePlayingStatus: is called! MI");
+        if(isPlaying){ controllerButton.setImageResource(R.drawable.ic_pause);
+        }else{ controllerButton.setImageResource(R.drawable.ic_play); }
     }
 }

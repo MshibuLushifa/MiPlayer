@@ -3,14 +3,15 @@ package com.milushifa.miplayer.service.player;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 
-import com.milushifa.miplayer.util.Flags;
+import com.milushifa.miplayer.receiver.PlayerTracker;
 
 public class Player implements IPlayer, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
     private Context context;
     private MediaPlayer mediaPlayer;
     private MPPlayable mpPlayable;
+
+    private PlayerTracker mPlayerTracker;
 
     public Player(Context context){
         this.context = context;
@@ -19,6 +20,8 @@ public class Player implements IPlayer, MediaPlayer.OnErrorListener, MediaPlayer
         mediaPlayer.setOnCompletionListener(this);
 
         mpPlayable = MPPlayable.getInstance();
+
+        mPlayerTracker = PlayerTracker.getInstance();
     }
 
     @Override public void playTrack(){
@@ -28,15 +31,23 @@ public class Player implements IPlayer, MediaPlayer.OnErrorListener, MediaPlayer
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnErrorListener(this);
+
+        mPlayerTracker.updateDurationOfTrack(getDuration());
+        mPlayerTracker.updatePlayingStatus(true);
+        mPlayerTracker.updateCurrentTrackTitle(mpPlayable.getCurrentTrackTitle());
+        mPlayerTracker.updateCurrentTrackDetails(mpPlayable.getCurrentTrackDetails());
+        mPlayerTracker.updateCurrentTrackAlbumArtUri(mpPlayable.getTCurrentTrackUri());
     }
 
     @Override public void pauseTrack() {
         mediaPlayer.pause();
+        mPlayerTracker.updatePlayingStatus(false);
     }
 
     @Override
     public void startTrack() {
         mediaPlayer.start();
+        mPlayerTracker.updatePlayingStatus(true);
     }
 
     @Override public void nextTrack() {
@@ -51,6 +62,7 @@ public class Player implements IPlayer, MediaPlayer.OnErrorListener, MediaPlayer
 
     @Override public void stopTrack() {
         releaseMiPlayer();
+        mPlayerTracker.updatePlayingStatus(false);
     }
 
     public boolean isPlaying(){
@@ -66,15 +78,13 @@ public class Player implements IPlayer, MediaPlayer.OnErrorListener, MediaPlayer
         return false;
     }
 
-    public String getCurrentTrack(){
-        return mpPlayable.getCurrentTrack();
-    }
+    public String getCurrentTrackTitle(){ return mpPlayable.getCurrentTrackTitle(); }
 
     public int getDuration(){
         return mpPlayable.getDurationOfCurrentTrack();
     }
 
-    public int getCurrentPosition(){ return mediaPlayer.getCurrentPosition(); }
+    public int getCurrentPosition(){mPlayerTracker.updateCurrentPositionOfTrack(mediaPlayer.getCurrentPosition()); return mediaPlayer.getCurrentPosition(); }
 
     public void setSeekTo(int position){
         mediaPlayer.seekTo(position);

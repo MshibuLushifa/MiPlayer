@@ -94,8 +94,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         @Override
         public void onClick(View v) {
             mpPlayable.updateCurrentPlayable(trackList, getAdapterPosition());
-            mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT);
             context.startService(ServiceProvider.getMiServiceIntent(context, ControllerConstants.PLAY_TRACK));
+            mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT);
         }
     }
 }
