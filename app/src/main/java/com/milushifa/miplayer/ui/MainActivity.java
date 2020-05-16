@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        registerReceiver();
+        mReceiver = new UiDataReceiver();
 
         transmit(FragmentType.MAIN_FRAGMENT);
     }
@@ -107,22 +107,28 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        unregisterReceiver();
+    protected void onStart() {
+        super.onStart();
+        registerReceiver();
     }
 
-//    private void registerReceiver(){
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_DURATION");
-//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_CURRENT_POSITION");
-//        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_PLAYING_STATUS");
-//        intentFilter.addAction("com.milushifa.miplayer.receiver.TRACK_CHANGE");
-//        intentFilter.setPriority(1000);
-//        registerReceiver(mReceiver, intentFilter);
-//    }
-//    private void unregisterReceiver(){
-//        unregisterReceiver(mReceiver);
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver();
+    }
+
+    private void registerReceiver(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_DURATION");
+        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_CURRENT_POSITION");
+        intentFilter.addAction("com.milushifa.miplayer.receiver.SEND_PLAYING_STATUS");
+        intentFilter.addAction("com.milushifa.miplayer.receiver.TRACK_CHANGE");
+        intentFilter.setPriority(1000);
+        registerReceiver(mReceiver, intentFilter);
+    }
+    private void unregisterReceiver(){
+        unregisterReceiver(mReceiver);
+    }
 }
 
