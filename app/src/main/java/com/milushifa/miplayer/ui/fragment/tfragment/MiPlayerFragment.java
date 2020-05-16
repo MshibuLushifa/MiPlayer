@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.receiver.MediaObserver;
-import com.milushifa.miplayer.receiver.PlayerTracker;
+import com.milushifa.miplayer.service.player.PlayerTracker;
 import com.milushifa.miplayer.receiver.UiDataReceiver;
 import com.milushifa.miplayer.receiver.UiUpdater;
 import com.milushifa.miplayer.service.MiPlayerService;
@@ -152,48 +152,33 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
 
     @Override public void setSeekProgress(int progress) {
         String crntTime, skgTime;
-
         int duration = durationOfCurrentTrack - progress;
-
         // For current Time...
         if(duration<3600000){
             long minute = (duration/1000)/60;
             long second = (duration/1000)%60;
-
             crntTime = minute + ":" + second;
-
         }else{
             long hours = ((duration/1000)/60)/60;
             long minute = ((duration/1000)/60)%60;
             long second = (duration/1000)%60;
-
             crntTime = hours + ":" + minute + ":" + second;
-
         }
-
         // For seeking Time...
         if(progress<3600000){
             long minute = (progress/1000)/60;
             long second = (progress/1000)%60;
-
             skgTime = minute + ":" + second;
-
         }else{
             long hours = ((progress/1000)/60)/60;
             long minute = ((progress/1000)/60)%60;
             long second = (progress/1000)%60;
-
             skgTime = hours + ":" + minute + ":" + second;
-
         }
-
-
         currentTime.setText(crntTime);
         seekingTime.setText(skgTime);
-
         mSeekBar.setProgress(progress);
     }
-
     @Override
     public void trackChange() {
         setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
@@ -201,7 +186,6 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void mediaChangePlayingStatus(boolean isPlaying) {
-        Log.i(Flags.TAG, "mediaChangePlayingStatus: is called! MI");
         if(isPlaying){ controllerButton.setImageResource(R.drawable.ic_pause);
         }else{ controllerButton.setImageResource(R.drawable.ic_play); }
     }

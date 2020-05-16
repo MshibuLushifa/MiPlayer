@@ -1,4 +1,4 @@
-package com.milushifa.miplayer.datasaver;
+package com.milushifa.miplayer.service.player.datasaver;
 
 public class CookieDBContract {
 
@@ -17,8 +17,4 @@ public class CookieDBContract {
         public static final String TRACK_NUMBER = "track_number";
     }
 
-    public static class LastTrackColumns{
-        public static final String TRACK_ID = "track_id";
-        public static final String LAST_PLAYED_RECORD = "last_played_record";
-    }
 }

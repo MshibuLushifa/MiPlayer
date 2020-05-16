@@ -1,6 +1,6 @@
 package com.milushifa.miplayer.receiver;
 
-public class ConstantsBroadcast {
+public class BroadcastAction {
     public static final String SEND_DURATION = "com.milushifa.miplayer.receiver.SEND_DURATION";
     public static final String DURATION = "com.milushifa.miplayer.receiver.DURATION";
 

@@ -15,6 +15,8 @@ import com.milushifa.miplayer.media.model.Track;
 import com.milushifa.miplayer.service.ServiceProvider;
 import com.milushifa.miplayer.service.player.ControllerConstants;
 import com.milushifa.miplayer.service.player.MPPlayable;
+import com.milushifa.miplayer.service.player.datasaver.CookieDBHelper;
+import com.milushifa.miplayer.service.player.datasaver.CookieHelper;
 import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 import com.milushifa.miplayer.util.Flags;
@@ -93,6 +95,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
         @Override
         public void onClick(View v) {
+            CookieDBHelper mCookie = CookieHelper.getHelper(context);
+            mCookie.storeThisAsCookie(trackList);
+
             mpPlayable.updateCurrentPlayable(trackList, getAdapterPosition());
             context.startService(ServiceProvider.getMiServiceIntent(context, ControllerConstants.PLAY_TRACK));
             mFragmentTransmitter.transmit(FragmentType.PLAYER_FRAGMENT);

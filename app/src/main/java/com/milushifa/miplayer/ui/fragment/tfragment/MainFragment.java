@@ -1,6 +1,9 @@
 package com.milushifa.miplayer.ui.fragment.tfragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,21 +19,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.milushifa.miplayer.R;
 import com.milushifa.miplayer.adapter.PagerAdapter;
+import com.milushifa.miplayer.media.loader.TracksLoader;
+import com.milushifa.miplayer.media.model.Track;
+import com.milushifa.miplayer.receiver.BroadcastAction;
 import com.milushifa.miplayer.receiver.MediaObserver;
-import com.milushifa.miplayer.receiver.PlayerTracker;
+import com.milushifa.miplayer.service.player.MPPlayable;
+import com.milushifa.miplayer.service.player.Player;
+import com.milushifa.miplayer.service.player.PlayerTracker;
 import com.milushifa.miplayer.receiver.UiDataReceiver;
 import com.milushifa.miplayer.service.ServiceProvider;
 import com.milushifa.miplayer.service.player.ControllerConstants;
+import com.milushifa.miplayer.service.player.datasaver.CookieDBHelper;
+import com.milushifa.miplayer.service.player.datasaver.CookieHelper;
 import com.milushifa.miplayer.ui.MainActivity;
-import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 import com.milushifa.miplayer.util.Flags;
+
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class MainFragment extends Fragment implements MediaObserver {
@@ -52,7 +64,6 @@ public class MainFragment extends Fragment implements MediaObserver {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UiDataReceiver.setMediaObserverForMiniPlayer(this);
         mPlayerTracker = PlayerTracker.getInstance();
     }
 
@@ -121,7 +132,8 @@ public class MainFragment extends Fragment implements MediaObserver {
 
 
         mediaChangePlayingStatus(mPlayerTracker.getPlayingStatus());
-        setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
+
+        new LoadMiPlayer().execute();
 
     }
 
@@ -135,9 +147,12 @@ public class MainFragment extends Fragment implements MediaObserver {
         if(title!=null && details!=null){
             if(title.length()>25) title = title.substring(0, 22);
             if(details.length()>27) details = details.substring(0, 25);
-            lastTrackTitle.setText(title);
-            lastTrackDetails.setText(details);
+        }else{
+            title = "";
+            details = "";
         }
+        lastTrackTitle.setText(title);
+        lastTrackDetails.setText(details);
     }
 
     @Override
@@ -148,4 +163,45 @@ public class MainFragment extends Fragment implements MediaObserver {
             lastTrackControllerToggleImageAsButton.setImageResource(R.drawable.ic_play);
         }
     }
+
+
+
+
+
+    public class LoadMiPlayer extends AsyncTask<String, Void, String> {
+        MPPlayable mpPlayable;
+        List<Track> trackList;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mpPlayable = MPPlayable.getInstance();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            CookieDBHelper mCookieHelper = CookieHelper.getHelper(getContext());
+            trackList = mCookieHelper.getCookies();
+            return "Execute";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(trackList==null){
+                trackList = new TracksLoader().getAllTracks(getContext());
+                mpPlayable.updateCurrentPlayable(trackList, 0);
+                CookieDBHelper mCookieHelper = CookieHelper.getHelper(getContext());
+                mCookieHelper.storeThisAsCookie(trackList);
+            }else{
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences(Player.LAST_TRACK_POSITION, MODE_PRIVATE);
+
+                mpPlayable.updateCurrentPlayable(trackList, sharedPreferences.getInt(Player.TRACK_POSITION, 0));
+            }
+            Intent broadcastIntent = new Intent(BroadcastAction.TRACK_CHANGE);
+            getContext().sendBroadcast(broadcastIntent);
+            setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
+        }
+    }
+
+
 }

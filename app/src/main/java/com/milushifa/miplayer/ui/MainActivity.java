@@ -4,13 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.milushifa.miplayer.R;
+import com.milushifa.miplayer.media.loader.TracksLoader;
 import com.milushifa.miplayer.media.model.ModelType;
+import com.milushifa.miplayer.media.model.Track;
+import com.milushifa.miplayer.receiver.BroadcastAction;
 import com.milushifa.miplayer.receiver.UiDataReceiver;
+import com.milushifa.miplayer.service.player.MPPlayable;
+import com.milushifa.miplayer.service.player.Player;
+import com.milushifa.miplayer.service.player.datasaver.CookieDBHelper;
+import com.milushifa.miplayer.service.player.datasaver.CookieHelper;
 import com.milushifa.miplayer.ui.fragment.tfragment.ExpanderFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.BackStack;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
@@ -18,6 +28,8 @@ import com.milushifa.miplayer.ui.fragment.tfragment.MainFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.MiPlayerFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.util.Flags;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FragmentTransmitter {
     private FragmentManager manager;
@@ -38,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentTransmitt
         mReceiver = new UiDataReceiver();
 
         transmit(FragmentType.MAIN_FRAGMENT);
+
     }
 
     private void transaction(Fragment fragment){

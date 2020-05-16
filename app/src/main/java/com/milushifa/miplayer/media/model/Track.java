@@ -1,5 +1,11 @@
 package com.milushifa.miplayer.media.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.milushifa.miplayer.util.Flags;
+
 public class Track {
     public final long id;
     public final String title;
@@ -43,6 +49,9 @@ public class Track {
         this.trackNumber = -1;
     }
 
-
-
+    @NonNull
+    @Override
+    public String toString() {
+        return "data-> id: " + id + ", title: " + title + ", albumId: " + albumId;
+    }
 }
