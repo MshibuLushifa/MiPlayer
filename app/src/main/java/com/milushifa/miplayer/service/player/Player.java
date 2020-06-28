@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 
-import com.milushifa.miplayer.service.player.datasaver.CookieDBHelper;
-import com.milushifa.miplayer.service.player.datasaver.CookieHelper;
+import com.milushifa.miplayer.util.Flags;
 
 public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
     public static final String LAST_TRACK_POSITION = "last_track_position";
@@ -20,7 +20,6 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
     private BroadcastMessageHandler mBroadcastMessageHandler;
 
     private Handler mHandler;
-    private Runnable mRunnable;
 
     public Player(Context context){
         this.context = context;
@@ -65,6 +64,7 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
         mPlayerTracker.updatePlayingStatus(true);
     }
     @Override public void nextTrack() {
+        Log.i(Flags.TAG, "nextTrack: is reached!");
         mpPlayable.nextPlayableTrack();
         playTrack();
     }
@@ -78,6 +78,7 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
     }
 
     @Override public void onCompletion(MediaPlayer mp) {
+        Log.i(Flags.TAG, "onCompletion: is reached!");
         nextTrack();
     }
 
@@ -97,7 +98,7 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
 
     private void traceTrackProgress(){
         if(mediaPlayer.isPlaying()){
-            mRunnable = new Runnable() {
+            Runnable mRunnable = new Runnable() {
                 @Override
                 public void run() {
                     mBroadcastMessageHandler.currentPositionBroadcast(mediaPlayer.getCurrentPosition());

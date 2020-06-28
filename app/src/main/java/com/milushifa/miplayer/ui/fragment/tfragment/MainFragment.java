@@ -58,6 +58,8 @@ public class MainFragment extends Fragment implements MediaObserver {
 
     private PlayerTracker mPlayerTracker;
 
+    private Context context;
+
     public MainFragment(){
     }
 
@@ -72,6 +74,7 @@ public class MainFragment extends Fragment implements MediaObserver {
         super.onAttach(context);
         if(context instanceof FragmentTransmitter){
             this.mFragmentTransmitter = (FragmentTransmitter) context;
+            this.context = context;
         }
     }
 
@@ -188,17 +191,17 @@ public class MainFragment extends Fragment implements MediaObserver {
         @Override
         protected void onPostExecute(String s) {
             if(trackList==null){
-                trackList = new TracksLoader().getAllTracks(getContext());
+                trackList = new TracksLoader().getAllTracks(context);
                 mpPlayable.updateCurrentPlayable(trackList, 0);
-                CookieDBHelper mCookieHelper = CookieHelper.getHelper(getContext());
+                CookieDBHelper mCookieHelper = CookieHelper.getHelper(context);
                 mCookieHelper.storeThisAsCookie(trackList);
             }else{
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences(Player.LAST_TRACK_POSITION, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = context.getSharedPreferences(Player.LAST_TRACK_POSITION, MODE_PRIVATE);
 
                 mpPlayable.updateCurrentPlayable(trackList, sharedPreferences.getInt(Player.TRACK_POSITION, 0));
             }
             Intent broadcastIntent = new Intent(BroadcastAction.TRACK_CHANGE);
-            getContext().sendBroadcast(broadcastIntent);
+            context.sendBroadcast(broadcastIntent);
             setTrackAndDetails(mPlayerTracker.getCurrentTrackTitle(), mPlayerTracker.getCurrentTrackDetails());
         }
     }

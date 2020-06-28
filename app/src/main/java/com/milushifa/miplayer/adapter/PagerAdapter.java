@@ -1,7 +1,5 @@
 package com.milushifa.miplayer.adapter;
 
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,7 +10,6 @@ import com.milushifa.miplayer.ui.fragment.ArtistFragment;
 import com.milushifa.miplayer.ui.fragment.GenreFragment;
 import com.milushifa.miplayer.ui.fragment.PlaylistFragment;
 import com.milushifa.miplayer.ui.fragment.TrackFragment;
-import com.milushifa.miplayer.ui.fragment.tfragment.FragmentType;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
 
 public class PagerAdapter extends FragmentStateAdapter {
@@ -32,13 +29,13 @@ public class PagerAdapter extends FragmentStateAdapter {
             case 1: return new AlbumFragment(mFragmentTransmitter);
             case 2: return new ArtistFragment(mFragmentTransmitter);
             case 3: return new GenreFragment(mFragmentTransmitter);
-            case 4: return new PlaylistFragment();
-            default: return null;
+//            case 4: return new PlaylistFragment();
+            default: return new PlaylistFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 4;
     }
 }
