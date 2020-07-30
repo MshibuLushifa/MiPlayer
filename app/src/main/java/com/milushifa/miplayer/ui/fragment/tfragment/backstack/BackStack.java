@@ -1,9 +1,5 @@
 package com.milushifa.miplayer.ui.fragment.tfragment.backstack;
 
-import android.util.Log;
-
-import com.milushifa.miplayer.util.Flags;
-
 public class BackStack {
     private static String[] backStack  = new String[20];
     private static int stackTrace = -1;

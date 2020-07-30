@@ -7,7 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.milushifa.miplayer.ui.fragment.AlbumFragment;
 import com.milushifa.miplayer.ui.fragment.ArtistFragment;
-import com.milushifa.miplayer.ui.fragment.GenreFragment;
 import com.milushifa.miplayer.ui.fragment.PlaylistFragment;
 import com.milushifa.miplayer.ui.fragment.TrackFragment;
 import com.milushifa.miplayer.ui.fragment.tfragment.backstack.FragmentTransmitter;
@@ -28,8 +27,6 @@ public class PagerAdapter extends FragmentStateAdapter {
             case 0: return new TrackFragment(mFragmentTransmitter);
             case 1: return new AlbumFragment(mFragmentTransmitter);
             case 2: return new ArtistFragment(mFragmentTransmitter);
-            case 3: return new GenreFragment(mFragmentTransmitter);
-//            case 4: return new PlaylistFragment();
             default: return new PlaylistFragment();
         }
     }
