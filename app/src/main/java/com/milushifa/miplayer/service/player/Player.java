@@ -9,6 +9,8 @@ import android.util.Log;
 import com.milushifa.miplayer.util.Flags;
 
 public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
+    private int trace_status;
+
     public static final String LAST_TRACK_POSITION = "last_track_position";
     public static final String TRACK_POSITION = "track_position";
     private Context context;
@@ -33,6 +35,7 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
 
     @Override public void playTrack(){
         releaseMiPlayer();
+        trace_status = 0;
         mediaPlayer = MediaPlayer.create(context, mPlayerTracker.getCurrentPlayableTrack());
         mediaPlayer.start();
         mPlayerTracker.updatePlayingStatus(true);
@@ -64,7 +67,6 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
         mPlayerTracker.updatePlayingStatus(true);
     }
     @Override public void nextTrack() {
-        Log.i(Flags.TAG, "nextTrack: is reached!");
         mpPlayable.nextPlayableTrack();
         playTrack();
     }
@@ -74,13 +76,15 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
         playTrack();
     }
     @Override public void stopTrack() {
-        releaseMiPlayer();
+        trace_status = 1;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        releaseMiPlayer();
     }
 
-    @Override public void onCompletion(MediaPlayer mp) {
-        Log.i(Flags.TAG, "onCompletion: is reached!");
-        nextTrack();
-    }
 
     public void setSeekTo(int duration){
         mediaPlayer.seekTo(duration);
@@ -97,7 +101,8 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
 
 
     private void traceTrackProgress(){
-        if(mediaPlayer.isPlaying()){
+        if(mediaPlayer.isPlaying() && trace_status == 0){
+            Log.d("TAG", "traceTrackProgress: Reached1");
             Runnable mRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -106,6 +111,9 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
                 }
             };
             mHandler.postDelayed(mRunnable, 1000);
+        }else{
+            Log.d("TAG", "traceTrackProgress: Reached2");
+            releaseMiPlayer();
         }
     }
     private void releaseMiPlayer(){
@@ -115,4 +123,9 @@ public class Player implements IPlayer, MediaPlayer.OnCompletionListener {
         }
     }
 
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        Log.e(Flags.TAG, "onCompletion: Song is complete");
+        nextTrack();
+    }
 }

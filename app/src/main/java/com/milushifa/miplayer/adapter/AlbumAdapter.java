@@ -24,28 +24,22 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
     private List<Album> albumList;
     private Context context;
-
     private FragmentTransmitter mFragmentTransmitter;
-
-    public AlbumAdapter(Context context, List<Album> albumList, FragmentTransmitter mFragmentTransmitter){
+    public AlbumAdapter(Context context, List<Album> albumList, FragmentTransmitter mFragmentTransmitter) {
         this.context = context;
         this.albumList = albumList;
         this.mFragmentTransmitter = mFragmentTransmitter;
     }
-
 
     @NonNull
     @Override
     public AlbumHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new AlbumHolder(LayoutInflater.from(context).inflate(R.layout.layout_album, parent, false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull AlbumHolder holder, int position) {
         Album album = albumList.get(position);
-
         String details = album.artist + ", tracks: " + album.numberOfSong;
-
         holder.setAlbum(album.album, details);
     }
 
@@ -54,11 +48,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
         return albumList.size();
     }
 
-
-
-
-
-    class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView albumAtrView;
         private TextView albumTitle, albumDetails;
 
@@ -71,16 +61,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
             itemView.setOnClickListener(this);
         }
 
-        ImageView getAlbumAtrView(){
+        ImageView getAlbumAtrView() {
             return albumAtrView;
         }
 
-        void setAlbum(String title, String details){
-            if(title.length()>25)title=title.substring(0, 22) + "...";
-            if(details.length()>35)details=details.substring(0, 30) + "...";
+        void setAlbum(String title, String details) {
+            if (title.length() > 25) title = title.substring(0, 22) + "...";
+            if (details.length() > 35) details = details.substring(0, 30) + "...";
 
-             albumTitle.setText(title);
-             albumDetails.setText(details);
+            albumTitle.setText(title);
+            albumDetails.setText(details);
         }
 
         @Override

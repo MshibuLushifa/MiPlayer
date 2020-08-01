@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -47,7 +48,9 @@ public class MiPlayerService extends Service {
                 mPlayer.previousTrack();
                 break;
             case ControllerConstants.STOP_SERVICE:
-
+                Log.e("TAG", "onStartCommand: Reached!");
+                mPlayer.stopTrack();
+                stopSelf();
                 break;
             case ControllerConstants.SET_TRACK_POSITION:
                 mPlayer.setSeekTo(intent.getIntExtra("PROGRESS", 0));
@@ -61,6 +64,20 @@ public class MiPlayerService extends Service {
 
 
     private void createForegroundService(String track) {
+        Intent intentClose = new Intent(this, MiPlayerService.class);
+        intentClose.setAction(ControllerConstants.STOP_SERVICE);
+
+        Intent intentPrev = new Intent(this, MiPlayerService.class);
+        intentPrev.setAction(ControllerConstants.PREV_TRACK);
+
+        Intent intentNext = new Intent(this, MiPlayerService.class);
+        intentNext.setAction(ControllerConstants.NEXT_TRACK);
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.media_style_notification_layut);
+        remoteViews.setOnClickPendingIntent(R.id.closeButton, PendingIntent.getService(this, 101, intentClose, PendingIntent.FLAG_UPDATE_CURRENT));
+        remoteViews.setOnClickPendingIntent(R.id.playPrevButton, PendingIntent.getService(this, 101, intentPrev, PendingIntent.FLAG_UPDATE_CURRENT));
+        remoteViews.setOnClickPendingIntent(R.id.playNextButton, PendingIntent.getService(this, 101, intentNext, PendingIntent.FLAG_UPDATE_CURRENT));
+
         // Content Intent
         Intent pendingIntent = new Intent(this, MainActivity.class);
         pendingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -72,6 +89,13 @@ public class MiPlayerService extends Service {
                 .setContentTitle("MiPlayer")
                 .setContentText("Track: " + track)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                //Add Actions
+                .addAction(R.drawable.ic_prev, "prev", null)
+                .addAction(R.drawable.ic_play, "play_pause", null)
+                .addAction(R.drawable.ic_next, "next", null)
+                // Set Media Style
+//                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle())
+                .setContent(remoteViews)
                 .setContentIntent(contentIntent)
                 .build();
 
