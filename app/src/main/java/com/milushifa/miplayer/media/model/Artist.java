@@ -12,11 +12,4 @@ public class Artist {
         this.albumCount = albumCount;
         this.songCount = songCount;
     }
-
-    public Artist() {
-        id = -1;
-        artist = "";
-        albumCount = -1;
-        songCount = -1;
-    }
 }

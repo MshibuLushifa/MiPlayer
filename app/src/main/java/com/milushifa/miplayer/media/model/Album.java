@@ -17,12 +17,4 @@ public class Album {
         this.year = year;
     }
 
-    public Album() {
-        id = -1;
-        album = "";
-        artistId = -1;
-        artist = "";
-        numberOfSong = -1;
-        year = -1;
-    }
 }

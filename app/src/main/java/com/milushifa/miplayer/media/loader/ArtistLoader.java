@@ -32,18 +32,6 @@ public class ArtistLoader {
 
         return artistList;
     }
-    public Artist getArtistById(Context context, long artistId){
-        Artist artist = new Artist();
-        Cursor cursor = makeCursor(context, "_id = ?", new String[]{String.valueOf(artistId)});
-        if(cursor!=null&&cursor.moveToFirst()){
-            artist = new Artist(cursor.getLong(0),
-                    cursor.getString(1),
-                    cursor.getInt(2),
-                    cursor.getInt(3));
-            cursor.close();
-        }
-        return artist;
-    }
 
     private static Cursor makeCursor(Context context, String selection, String[] selectionArgs){
         Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;

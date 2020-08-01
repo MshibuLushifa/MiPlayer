@@ -31,22 +31,6 @@ public class AlbumLoader {
         return albumList;
     }
 
-    private Album getAlbumByAlbumId(Context context, long albumId){
-        Album album = new Album();
-        Cursor cursor = makeCursor(context, "_id = ?", new String[]{String.valueOf(albumId)});
-        if(cursor!=null && cursor.moveToFirst()){
-            album = new Album(cursor.getLong(0),
-                    cursor.getString(1),
-                    cursor.getLong(2),
-                    cursor.getString(3),
-                    cursor.getInt(4),
-                    cursor.getInt(5));
-            cursor.close();
-        }
-        return album;
-    }
-
-
     private Cursor makeCursor(Context context, String selection, String []selectArgs){
         Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
         String []mProjection = new String[]{
@@ -58,7 +42,6 @@ public class AlbumLoader {
                 MediaStore.Audio.AlbumColumns.FIRST_YEAR
         };
         String mSortOrder = MediaStore.Audio.Albums.DEFAULT_SORT_ORDER;
-        Cursor cursor = context.getContentResolver().query(uri, mProjection, selection, selectArgs, mSortOrder);
-        return cursor;
+        return context.getContentResolver().query(uri, mProjection, selection, selectArgs, mSortOrder);
     }
 }

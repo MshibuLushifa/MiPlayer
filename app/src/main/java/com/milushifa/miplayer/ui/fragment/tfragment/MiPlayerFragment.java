@@ -27,6 +27,8 @@ import com.milushifa.miplayer.service.ServiceProvider;
 import com.milushifa.miplayer.service.player.ControllerConstants;
 import com.milushifa.miplayer.util.Flags;
 
+import java.util.Objects;
+
 
 public class MiPlayerFragment extends Fragment implements View.OnClickListener, UiUpdater, MediaObserver {
     private Toolbar mToolbar;
@@ -97,7 +99,7 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
                    Intent intent = new Intent(getContext(), MiPlayerService.class);
                    intent.setAction(ControllerConstants.SET_TRACK_POSITION);
                    intent.putExtra("PROGRESS", progress);
-                   getContext().startService(intent);
+                   Objects.requireNonNull(getContext()).startService(intent);
                }
             }
 

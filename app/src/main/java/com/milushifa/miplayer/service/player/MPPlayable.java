@@ -1,10 +1,9 @@
 package com.milushifa.miplayer.service.player;
 
-import android.content.ContentUris;
-import android.net.Uri;
-import android.provider.MediaStore;
+import android.util.Log;
 
 import com.milushifa.miplayer.media.model.Track;
+import com.milushifa.miplayer.util.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,8 @@ public class MPPlayable {
             mCurrentPosition = 0;
         }
         playerTrackerUpdate();
+
+        Log.i(Flags.TAG, "nextPlayableTrack: is reached!");
     }
     public void prevPlayableTrack(){
         if(mCurrentPosition!=0){
@@ -42,27 +43,14 @@ public class MPPlayable {
             mCurrentPosition = mTrackList.size()-1;
         }
         playerTrackerUpdate();
+
+        Log.i(Flags.TAG, "prevPlayableTrack: is reached!");
     }
 
     private void playerTrackerUpdate(){
         mPlayerTracker.updateWithCurrentTrack(mTrackList.get(mCurrentPosition));
+        Log.i(Flags.TAG, "playerTrackerUpdate: is reached!");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private static MPPlayable instance;
 
     private MPPlayable(){

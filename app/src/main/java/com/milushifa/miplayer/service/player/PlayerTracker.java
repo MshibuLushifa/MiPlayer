@@ -37,11 +37,6 @@ public class PlayerTracker{
     public Uri getCurrentTrackAlbumArtUri() { return ContentUris.withAppendedId(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, currentTrack.id); }
 
 
-
-
-
-
-
     private static PlayerTracker instance;
 
     public static PlayerTracker getInstance(){
