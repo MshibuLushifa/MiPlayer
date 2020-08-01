@@ -31,28 +31,21 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
         this.mFragmentTransmitter = mFragmentTransmitter;
     }
 
-
     @NonNull
     @Override
     public ArtistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ArtistHolder(LayoutInflater.from(context).inflate(R.layout.layout_artist, parent, false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ArtistHolder holder, int position) {
         Artist artist = artistList.get(position);
         holder.setAlbum(artist.artist, "tracks: " + artist.songCount + ", album: " + artist.albumCount);
-
     }
 
     @Override
     public int getItemCount() {
         return artistList.size();
     }
-
-
-
-
 
     class ArtistHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView artistAtrView;

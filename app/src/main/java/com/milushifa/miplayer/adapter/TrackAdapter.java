@@ -50,10 +50,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         Track track = trackList.get(position);
 
         if(track.duration<3600000){
-//            float minuteWithSecond = ((float)(track.duration / 1000) / 60);
-//            int minute = (int) minuteWithSecond;
-//            float rawSecond = minuteWithSecond-minute;
-//            int second = (int) ((rawSecond*1000)/10);
             long minute = (track.duration/1000)/60;
             long second = (track.duration/1000)%60;
 
@@ -64,7 +60,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             long second = (track.duration/1000)%60;
             holder.setTrack(track.title, track.album + ", " + track.artist, hours + ":" + minute + ":" + second);
         }
-//            holder.setTrack(track.title, track.album + ", " + track.artist, String.valueOf(track.duration));
     }
 
     @Override

@@ -5,7 +5,6 @@ public class CookieDBContract {
     public static final String COOKIE_TABLE = "cookie_table";
     public static final String LAST_TRACK_TABLE = "last_track";
 
-
     public static class CookieColumns{
         public static final String TRACK_ID = "track_id";
         public static final String TRACK_TITLE = "track_title";

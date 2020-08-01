@@ -102,14 +102,11 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
                    Objects.requireNonNull(getContext()).startService(intent);
                }
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
@@ -122,7 +119,6 @@ public class MiPlayerFragment extends Fragment implements View.OnClickListener, 
             currentTrackDetails.setText(details);
         }
     }
-
 
     @Override public void onClick(View v) {
         switch(v.getId()){

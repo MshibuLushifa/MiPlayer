@@ -60,9 +60,6 @@ public class MiPlayerService extends Service {
         return START_NOT_STICKY;
     }
 
-
-
-
     private void createForegroundService(String track) {
         Intent intentClose = new Intent(this, MiPlayerService.class);
         intentClose.setAction(ControllerConstants.STOP_SERVICE);
@@ -89,12 +86,6 @@ public class MiPlayerService extends Service {
                 .setContentTitle("MiPlayer")
                 .setContentText("Track: " + track)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                //Add Actions
-                .addAction(R.drawable.ic_prev, "prev", null)
-                .addAction(R.drawable.ic_play, "play_pause", null)
-                .addAction(R.drawable.ic_next, "next", null)
-                // Set Media Style
-//                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle())
                 .setContent(remoteViews)
                 .setContentIntent(contentIntent)
                 .build();
